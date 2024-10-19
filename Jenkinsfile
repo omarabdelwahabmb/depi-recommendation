@@ -4,7 +4,7 @@ pipeline{
     stages{
         stage('clone repo'){
             steps{
-                git ('https://github.com/omarabdelwahabmb/depi-recommendation.git')
+                git ('git@github.com:omarabdelwahabmb/depi-recommendation.git')
             }
         }    
         stage('build-docker-images'){
