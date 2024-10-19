@@ -10,13 +10,13 @@ pipeline{
         stage('build-docker-images'){
             steps{
                 sh '''cd /home/yat/Desktop/omar-final/depi-recommendation/vote
-                      docker build -t 1998shehab/vote:01 .   
+                      docker build -t 1998shehab/vote:1 .   
                    '''  
                 sh '''cd /home/yat/Desktop/omar-final/depi-recommendation/worker
-                      docker build -t 1998shehab/worker:01 .
+                      docker build -t 1998shehab/worker:1 .
                    ''' 
                 sh '''cd /home/yat/Desktop/omar-final/depi-recommendation/result
-                      docker build -t 1998shehab/result:01 .
+                      docker build -t 1998shehab/result:1 .
                    ''' 
             }
         }
@@ -37,9 +37,9 @@ pipeline{
         }
         stage('push images'){
             steps{
-                sh ''' docker push 1998shehab/result:01
-                       docker push 1998shehab/worker:01
-                       docker push 1998shehab/vote:01
+                sh ''' docker push 1998shehab/result:1
+                       docker push 1998shehab/worker:1
+                       docker push 1998shehab/vote:1
                    '''           
             }
         }
