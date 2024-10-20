@@ -49,7 +49,7 @@ napkin-selection (3)
 ## Contributing We welcome contributions to improve this project.
 ### Please follow these steps:
 
-Fork the repository.
-Create a feature branch. Commit your changes. 
-Push the branch to your fork. 
-Open a pull request.
+- Fork the repository.
+- Create a feature branch. Commit your changes. 
+- Push the branch to your fork. 
+- Open a pull request.
