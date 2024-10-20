@@ -87,9 +87,11 @@ pipeline{
         }        
 
         failure {
-            mail to: "${params.Email}",
-                 subject: "failed pipeline: ${currentBuild.fullDisplayName}",
-                 body: "try again"
+            if (${params.Email} != "") {
+                mail to: "${params.Email}",
+                    subject: "failed pipeline: ${currentBuild.fullDisplayName}",
+                    body: "try again"
+            }
         }
     }        
 }
