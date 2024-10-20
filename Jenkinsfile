@@ -89,7 +89,6 @@ pipeline{
         }        
 
         failure {
-            steps{
                 script{
                     if (${email} != "") {
                         mail to: "${email}",
@@ -97,7 +96,6 @@ pipeline{
                             body: "try again"
                     }
                 }
-            }
         }
     }        
 }
