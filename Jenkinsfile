@@ -25,7 +25,7 @@ pipeline{
         }
         stage('Clone Repo'){
             steps{
-                git("https://github.com/omarabdelwahabmb/${params.repo}.git")
+                git(url: "https://github.com/omarabdelwahabmb/${params.repo}.git", branch: 'main')
             }
         }    
         stage('Build Docker Images'){
