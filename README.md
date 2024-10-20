@@ -1,65 +1,58 @@
-# Example Voting App
+Depi-Recommendation 
+A simple distributed application running with an Automated Deployment Pipeline using Jenkins, Docker, Docker Compose, Ansible, and AWS.
 
-A simple distributed application running across multiple Docker containers.
+Technologies Used
+Docker: Containerizes the backend and frontend applications for isolated and consistent environments.
+Jenkins: Manages the CI/CD pipeline to automate builds, tests, and deployments.
+Ansible: Automates server setup and deployment tasks.
+Docker Compose: Orchestrates multi-container Docker applications, simplifying the deployment process without Kubernetes.
+AWS: Provides cloud infrastructure for hosting the application.
 
-## Getting started
 
-Download [Docker Desktop](https://www.docker.com/products/docker-desktop) for Mac or Windows. [Docker Compose](https://docs.docker.com/compose) will be automatically installed. On Linux, make sure you have the latest version of [Compose](https://docs.docker.com/compose/install/).
+Architecture
+The updated deployment pipeline includes:
+Jenkins: Automated build, test, and deploy process.
+Docker: Containerization of the backend and frontend applications.
+Docker Compose: Manages the orchestration of containers, ensuring multi-container applications run smoothly.
+Ansible: Automates server setup, Docker installation, and deployment of the app using Docker Compose on AWS.
+AWS (EC2 instances): Hosts the Docker containers using Docker Compose for orchestration.
 
-This solution uses Python, Node.js, .NET, with Redis for messaging and Postgres for storage.
+Getting Started
+Prerequisites
+To set up and run this project, you will need the following:
 
-Run in this directory to build and run the app:
+Docker and Docker Compose installed on your local machine.
+Jenkins installed and running (either locally or on a server).
+Ansible installed on the Jenkins server.
+AWS account with EC2 .
 
-```shell
-docker compose up
-```
+Deployment Process
+Jenkins Pipeline Setup
+1-The pipeline is managed via Jenkins and includes the following stages:
 
-The `vote` app will be running at [http://localhost:5000](http://localhost:5000), and the `results` will be at [http://localhost:5001](http://localhost:5001).
+2-Checkout code: Fetches the latest code from the Git repository.
 
-Alternately, if you want to run it on a [Docker Swarm](https://docs.docker.com/engine/swarm/), first make sure you have a swarm. If you don't, run:
+3-Build Docker images: Builds Docker images for both the backend and frontend applications.
 
-```shell
-docker swarm init
-```
+4-Run Tests: Runs unit tests to ensure code quality.
 
-Once you have your swarm, in this directory run:
+5-Push Docker images: Pushes the built images to Docker Hub.
 
-```shell
-docker stack deploy --compose-file docker-stack.yml vote
-```
+6-Deploy with Ansible: Ansible provisions EC2 instances, sets up Docker, and deploys the application using Docker Compose.
 
-## Run the app in Kubernetes
 
-The folder k8s-specifications contains the YAML specifications of the Voting App's services.
+Security Measures
+The following security practices are applied:
 
-Run the following command to create the deployments and services. Note it will create these resources in your current namespace (`default` if you haven't changed it.)
+Secrets Management: Sensitive information like database credentials are stored securely using Jenkins and HashiCorp Vault.
+SSH Keys: Only SSH key-based authentication is allowed for server access.
 
-```shell
-kubectl create -f k8s-specifications/
-```
+Contributing
+We welcome contributions to improve this project. Please follow these steps:
 
-The `vote` web app is then available on port 31000 on each host of the cluster, the `result` web app is available on port 31001.
+Fork the repository.
+Create a feature branch.
+Commit your changes.
+Push the branch to your fork.
+Open a pull request.
 
-To remove them, run:
-
-```shell
-kubectl delete -f k8s-specifications/
-```
-
-## Architecture
-
-![Architecture diagram](architecture.excalidraw.png)
-
-* A front-end web app in [Python](/vote) which lets you vote between two options
-* A [Redis](https://hub.docker.com/_/redis/) which collects new votes
-* A [.NET](/worker/) worker which consumes votes and stores them in…
-* A [Postgres](https://hub.docker.com/_/postgres/) database backed by a Docker volume
-* A [Node.js](/result) web app which shows the results of the voting in real time
-
-## Notes
-
-The voting application only accepts one vote per client browser. It does not register additional votes if a vote has already been submitted from a client.
-
-This isn't an example of a properly architected perfectly designed distributed app... it's just a simple
-example of the various types of pieces and languages you might see (queues, persistent data, etc), and how to
-deal with them in Docker at a basic level.
