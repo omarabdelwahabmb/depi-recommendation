@@ -1,7 +1,9 @@
 ---
 - name: vote-app
   hosts: ec2
-  
+  vars:
+    repo: ""
+
   tasks:
     
     - name: Install Docker
@@ -28,18 +30,19 @@
       ansible.builtin.file:  
         path: /home/ec2-user/vote-app
         state: directory
-        mode: '777'
+        mode: '700'
     
     - name: Copy docker-compose.yml file
       ansible.builtin.copy:
-        src: /home/yat/Desktop/omar-final/depi-recommendation/docker-compose.yml
+        src: depi-recommendation/docker-compose.yml
         dest: /home/ec2-user/vote-app/
-        mode: '777'
+        mode: '400'
 
-    - name: Pull Docker images
+    - name: Pull Docker images and run the app
       shell: |
         docker pull 1998shehab/vote:1
         docker pull 1998shehab/worker:1
         docker pull 1998shehab/result:1
+        cd vote-app
         docker-compose up -d
       become: true
