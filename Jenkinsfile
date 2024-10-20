@@ -1,3 +1,4 @@
+def email = "omarabdelwahabmb@gmail.com"
 pipeline{
     agent  any
 
@@ -15,6 +16,7 @@ pipeline{
         stage ('Parameter Validation'){
             steps{
                 script{
+                    email = ${params.Email}
                     if (${params.DOCKER_PASSWORD} == "") {
                         error("Empty Password!")
                     }
@@ -81,14 +83,14 @@ pipeline{
     }
     post {
         success {
-            mail to: "${params.Email}",
+            mail to: "${email}",
                  subject: "Succeeded pipeline: ${currentBuild.fullDisplayName}",
                  body: "Well done, Group 2!"
         }        
 
         failure {
-            if (${params.Email} != "") {
-                mail to: "${params.Email}",
+            if (${email} != "") {
+                mail to: "${email}",
                     subject: "failed pipeline: ${currentBuild.fullDisplayName}",
                     body: "try again"
             }
