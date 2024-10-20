@@ -13,8 +13,12 @@ pipeline{
 
     stages{
         stage ('Parameter Validation'){
-            if (${params.password} == "") {
-                error("Empty Password!")
+            steps{
+                script{
+                    if (${params.password} == "") {
+                        error("Empty Password!")
+                    }
+                }
             }
         }
         stage('Clone Repo'){
