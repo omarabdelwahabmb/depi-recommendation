@@ -89,10 +89,14 @@ pipeline{
         }        
 
         failure {
-            if (${email} != "") {
-                mail to: "${email}",
-                    subject: "failed pipeline: ${currentBuild.fullDisplayName}",
-                    body: "try again"
+            steps{
+                script{
+                    if (${email} != "") {
+                        mail to: "${email}",
+                            subject: "failed pipeline: ${currentBuild.fullDisplayName}",
+                            body: "try again"
+                    }
+                }
             }
         }
     }        
