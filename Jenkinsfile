@@ -15,7 +15,7 @@ pipeline{
         stage ('Parameter Validation'){
             steps{
                 script{
-                    if (${params.password} == "") {
+                    if (${params.DOCKER_PASSWORD} == "") {
                         error("Empty Password!")
                     }
                 }
