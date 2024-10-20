@@ -47,6 +47,7 @@ pipeline{
         stage('deploy with ansible'){
             steps{
                 sh ''' cd /home/yat/Desktop/omar-final
+                       ssh-keyscan -H <ip> >> ~/.ssh/known_hosts
                        ansible-playbook -i ec2.ini ec2.yml
                    '''
             }

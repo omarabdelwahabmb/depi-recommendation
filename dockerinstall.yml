@@ -1,0 +1,15 @@
+---
+- name: docke install
+  hosts: ec2
+  become: true
+
+  tasks:
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present 
+      become: true
+    
+    - name: enable docker without sudo
+      shell: usermod -aG docker ec2-user
+       
