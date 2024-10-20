@@ -17,6 +17,8 @@ Docker Compose: Manages the orchestration of containers, ensuring multi-containe
 Ansible: Automates server setup, Docker installation, and deployment of the app using Docker Compose on AWS.
 AWS (EC2 instances): Hosts the Docker containers using Docker Compose for orchestration.
 
+![napkin-selection (3)](https://github.com/user-attachments/assets/bfd1ccf0-025f-4bf4-b3a9-55538369e762)
+
 Getting Started
 Prerequisites
 To set up and run this project, you will need the following:
