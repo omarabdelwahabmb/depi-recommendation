@@ -30,13 +30,13 @@ pipeline{
         }    
         stage('Build Docker Images'){
             steps{
-                sh """cd /home/yat/Desktop/omar-final/${params.repo}/vote
+                sh """cd ${params.repo}/vote
                       docker build -t ${params.DOCKER_USER}/vote:1 .   
                    """  
-                sh """cd /home/yat/Desktop/omar-final/${params.repo}/worker
+                sh """cd ${params.repo}/worker
                       docker build -t ${params.DOCKER_USER}/worker:1 .
                    """ 
-                sh """cd /home/yat/Desktop/omar-final/${params.repo}/result
+                sh """cd ${params.repo}/result
                       docker build -t ${params.DOCKER_USER}/result:1 .
                    """ 
             }
