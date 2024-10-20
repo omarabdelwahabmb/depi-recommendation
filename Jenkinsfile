@@ -16,8 +16,8 @@ pipeline{
         stage ('Parameter Validation'){
             steps{
                 script{
-                    email = ${params.Email}
-                    if (${params.DOCKER_PASSWORD} == "") {
+                    email = params.Email
+                    if (params.DOCKER_PASSWORD == "") {
                         error("Empty Password!")
                     }
                 }
@@ -90,7 +90,7 @@ pipeline{
 
         failure {
                 script{
-                    if (${email} != "") {
+                    if (email != "") {
                         mail to: "${email}",
                             subject: "failed pipeline: ${currentBuild.fullDisplayName}",
                             body: "try again"
