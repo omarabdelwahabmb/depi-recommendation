@@ -33,7 +33,9 @@
 - Docker and Docker Compose installed on your local machine.
 - Jenkins installed and running (either locally or on a server). 
 - Ansible installed on the Jenkins server. 
-- AWS account with EC2 .
+- AWS account with EC2.
+
+  For detailed deployment steps: Please, check the Requirements.md file.
 
 ## Deployment Process 
 ### Jenkins Pipeline Setup 
