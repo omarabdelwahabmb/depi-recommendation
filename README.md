@@ -10,11 +10,11 @@
 
 ## Architecture 
 ### The updated deployment pipeline includes:
-- **'Jenkins'**: Automated build, and deploy process. 
-- **'Docker'**: Containerization of the backend and frontend applications. 
-- **'Docker Compose'**: Manages the orchestration of containers, ensuring multi-container applications run smoothly. 
-- **'Ansible'**: Automates server setup, Docker installation, and deployment of the app using Docker Compose on AWS. 
-- **'AWS (EC2 instances)'**: Hosts the Docker containers using Docker Compose for orchestration.
+- **`Jenkins`**: Automated build and deployment process. 
+- **`Docker`**: Containerization of the backend and frontend applications. 
+- **`Docker Compose`**: Manages the orchestration of containers, ensuring multi-container applications run smoothly. 
+- **`Ansible`**: Automates server setup, Docker installation, and deployment of the app using Docker Compose on AWS. 
+- **`AWS (EC2 instances)`**: Hosts the Docker containers using Docker Compose for orchestration.
   
 ![napkin-selection (3)](https://github.com/user-attachments/assets/8f461cd6-56a5-41df-a904-8a4e6e593141)
 
