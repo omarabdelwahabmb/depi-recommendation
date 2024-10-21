@@ -76,6 +76,8 @@ pipeline{
                             sh "sudo ssh-keyscan -H ${params.hostname} >> ~/.ssh/known_hosts"
                         }
                         sh "ansible-playbook -i inventory/hosts.ini prod-playbook.yml"
+                        echo "Voting can be done at http://${params.hostname}/5000"
+                        echo "Result is here at http://${params.hostname}/5001"
                 }
             }
         }
