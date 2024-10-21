@@ -31,8 +31,7 @@ Paste it in Jenkins then test mail configuration
 
   Save
 
-Add Docker USERNAME and PASSWORD for docker credentials
-
+Add Docker credentials, add a description in Jenkins credentials
 
 
 Create a new pipeline
