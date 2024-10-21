@@ -33,13 +33,13 @@ pipeline{
                 sh """cd vote
                       pwd 
                       ls -l
-                      docker build -f ./Dockerfile -t ${DOCKER_USERNAME}/vote:1 .   
+                      docker build -f Dockerfile -t ${DOCKER_USERNAME}/vote:1 .   
                    """  
                 sh """cd worker
-                      docker build -f ./Dockerfile -t ${DOCKER_USERNAME}/worker:1 .
+                      docker build -f Dockerfile -t ${DOCKER_USERNAME}/worker:1 .
                    """ 
                 sh """cd result
-                      docker build -f ./Dockerfile -t ${DOCKER_USERNAME}/result:1 .
+                      docker build -f Dockerfile -t ${DOCKER_USERNAME}/result:1 .
                    """ 
             }
         }
