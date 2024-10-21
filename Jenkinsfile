@@ -5,7 +5,6 @@ pipeline{
         string(defaultValue: 'omarabdelwahabmb@gmail.com', description: 'Please, Enter Email to receive notifications:', name: 'Email')
         string(defaultValue: '1998shehab', description: 'Please, dockerhub username:', name: 'DOCKER_USERNAME')
         password(description: 'Please, dockerhub password:', name: 'DOCKER_PASSWORD')
-        string(defaultValue: '1998shehab', description: 'Please, enter dockerhub repo', name: 'repo')
         string(description: 'Please, Enter hostname of instance:', name: 'hostname')
         string(description: 'Please, Enter Private key path:', name: 'key')
         booleanParam(name: 'Verify_Key_Fingerprint', defaultValue: true, description: 'Verify key fingerprint. Don\'t disable it. Use it for initial connection.')
@@ -15,7 +14,7 @@ pipeline{
         stage ('Parameter Validation'){
             steps{
                 script{
-                    if (params.Email == "" || params.DOCKER_USERNAME == "" || params.DOCKER_PASSWORD == "" || params.repo == "" || params.hostname == "" || params.key == "") {
+                    if (params.Email == "" || params.DOCKER_USERNAME == "" || params.DOCKER_PASSWORD == "" || params.hostname == "" || params.key == "") {
                         error("One or more fields are empty!")
                     }
                 }
@@ -62,8 +61,8 @@ pipeline{
                     mkdir inventory
                     echo "[ec2]" > inventory/hosts.ini
                     echo "${params.hostname} ansible_user=ec2-user ansible_ssh_private_key_file=${params.key}" >> inventory/hosts.ini
-                    sed -i '+s+pull .*/+pull ${params.repo}/+g' prod-playbook.yml
-                    sed -i '+s+image: .*/+image: ${params.repo}/+g' docker-compose.yml
+                    sed -i '+s+pull .*/+pull ${params.DOCKER_USERNAME}/+g' prod-playbook.yml
+                    sed -i '+s+image: .*/+image: ${params.DOCKER_USERNAME}/+g' docker-compose.yml
                    """
             }
         }
