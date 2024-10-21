@@ -24,10 +24,12 @@ pipeline{
         stage('Clone Repo'){
             steps{
                 git(url: "https://github.com/omarabdelwahabmb/depi-recommendation.git", branch: 'main')
+                sh "pwd && ls -lR"
             }
         }    
         stage('Build Docker Images'){
             steps{
+                sh "pwd && ls -lR"
                 sh """cd depi-recommendation/vote
                       docker build -t ${params.DOCKER_USERNAME}/vote:1 .   
                    """  
