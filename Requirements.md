@@ -3,7 +3,7 @@ Provision at least t2.micro EC2 Instance on AWS
 Save the private key in secure path
 chmod 400 key.pem
 
-Download Jenkins jar from the link below:
+Download Jenkins jar from this link:
 (https://get.jenkins.io/war-stable/2.462.3/jenkins.war)
 
 Run the command java -jar jenkins.war
