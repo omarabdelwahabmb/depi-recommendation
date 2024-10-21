@@ -4,7 +4,10 @@ Save the private key in secure path
 chmod 400 key.pem
 
 Download Jenkins jar from the link below:
-Link*******************************************
+(https://get.jenkins.io/war-stable/2.462.3/jenkins.war)
+
+Run the command java -jar jenkins.war
+Browse to (http://localhost:8080) and wait until the Unlock Jenkins page appears
 
 Install the mail plugin and configure it
 Install the email extension plugin
@@ -28,21 +31,19 @@ Go to Google Account Security Settings
   copy the password
   
 Paste it in Jenkins then test mail configuration
-
   Save
 
 Add Docker credentials, add a description in Jenkins credentials
 
-
 Create a new pipeline
 choose github project
 add the following url:
-https://github.com/omarabdelwahabmb/depi-recommendation
+(https://github.com/omarabdelwahabmb/depi-recommendation)
 
 Scroll down and choose pipeline from SCM.
 
 re-enter the following url:
-https://github.com/omarabdelwahabmb/depi-recommendation
+(https://github.com/omarabdelwahabmb/depi-recommendation)
 
 change Branch Specifier and replace */master with */main
 
@@ -51,4 +52,6 @@ run the pipeline
 
 It will fail for first run, try again
 
-Enter the required fields
+Enter the required fields.
+
+Run the pipeline
