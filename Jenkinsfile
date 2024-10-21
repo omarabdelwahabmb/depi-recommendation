@@ -1,4 +1,3 @@
-def email = "omarabdelwahabmb@gmail.com"
 pipeline{
     agent  any
 
@@ -9,35 +8,34 @@ pipeline{
         string(defaultValue: '1998shehab', description: 'Please, enter dockerhub repo', name: 'repo')
         string(description: 'Please, Enter hostname of instance:', name: 'hostname')
         string(description: 'Please, Enter Private key path:', name: 'key')
-        booleanParam(name: 'Verify Key Fingerprint', defaultValue: true, description: 'Verify key fingerprint. Don\'t disable it. Use it for initial connection.')
+        booleanParam(name: 'Verify_Key_Fingerprint', defaultValue: true, description: 'Verify key fingerprint. Don\'t disable it. Use it for initial connection.')
     }
 
     stages{
         stage ('Parameter Validation'){
             steps{
                 script{
-                    email = params.Email
-                    if (params.DOCKER_PASSWORD == "") {
-                        error("Empty Password!")
+                    if (params.Email == "" || params.DOCKER_USERNAME == "" || params.DOCKER_PASSWORD == "" || params.repo == "" || params.hostname == "" || params.key == "") {
+                        error("One or more fields are empty!")
                     }
                 }
             }
         }
         stage('Clone Repo'){
             steps{
-                git(url: "https://github.com/omarabdelwahabmb/${params.repo}.git", branch: 'main')
+                git(url: "https://github.com/omarabdelwahabmb/depi-recommendation.git", branch: 'main')
             }
         }    
         stage('Build Docker Images'){
             steps{
                 sh """cd ${params.repo}/vote
-                      docker build -t ${params.DOCKER_USER}/vote:1 .   
+                      docker build -t ${params.DOCKER_USERNAME}/vote:1 .   
                    """  
                 sh """cd ${params.repo}/worker
-                      docker build -t ${params.DOCKER_USER}/worker:1 .
+                      docker build -t ${params.DOCKER_USERNAME}/worker:1 .
                    """ 
                 sh """cd ${params.repo}/result
-                      docker build -t ${params.DOCKER_USER}/result:1 .
+                      docker build -t ${params.DOCKER_USERNAME}/result:1 .
                    """ 
             }
         }
@@ -51,9 +49,9 @@ pipeline{
         }
         stage('Push Images'){
             steps{
-                sh """ docker push ${params.DOCKER_USER}/result:1
-                       docker push ${params.DOCKER_USER}/worker:1
-                       docker push ${params.DOCKER_USER}/vote:1
+                sh """ docker push ${params.DOCKER_USERNAME}/result:1
+                       docker push ${params.DOCKER_USERNAME}/worker:1
+                       docker push ${params.DOCKER_USERNAME}/vote:1
                    """           
             }
         }
@@ -65,7 +63,7 @@ pipeline{
                     echo "[ec2]" > inventory/hosts.ini
                     echo "${params.hostname} ansible_user=ec2-user ansible_ssh_private_key_file=${params.key}" >> inventory/hosts.ini
                     sed -i '+s+pull .*/+pull ${params.repo}/+g' prod-playbook.yml
-                    sed -i '+s+image: .*/+image: ${params.repo}/+g' prod-playbook.yml
+                    sed -i '+s+image: .*/+image: ${params.repo}/+g' docker-compose.yml
                    """
             }
         }
@@ -73,25 +71,27 @@ pipeline{
 
         stage('deploy with ansible'){
             steps{
-                sh """ 
-                       ssh-keyscan -H ${params.hostname} >> ~/.ssh/known_hosts
-                       ansible-playbook -i inventory/hosts.ini -e "repo=${params.params.repo}" prod-playbook.yml
-                   """
+                script {
+                    if (params.Verify_Key_Fingerprint == "false") {
+                        sh "ssh-keyscan -H ${params.hostname} >> ~/.ssh/known_hosts"
+                    }
+                    sh "ansible-playbook -i inventory/hosts.ini prod-playbook.yml"
+                }
             }
         }
         
     }
     post {
         success {
-            mail to: "${email}",
+            mail to: "${params.Email}",
                  subject: "Succeeded pipeline: ${currentBuild.fullDisplayName}",
                  body: "Well done, Group 2!"
         }        
 
         failure {
                 script{
-                    if (email != "") {
-                        mail to: "${email}",
+                    if (params.Email != "") {
+                        mail to: "${params.Email}",
                             subject: "failed pipeline: ${currentBuild.fullDisplayName}",
                             body: "try again"
                     }

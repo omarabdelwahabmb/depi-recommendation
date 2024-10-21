@@ -1,9 +1,7 @@
 ---
 - name: vote-app
   hosts: ec2
-  vars:
-    repo: ""
-
+  
   tasks:
     
     - name: Install Docker
