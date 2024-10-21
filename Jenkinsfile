@@ -57,17 +57,19 @@ pipeline{
 
         stage('Create Inventory'){
             steps{
-                sh """ 
-                    mkdir inventory || true
-                    echo "[ec2]" > hosts.ini
-                    echo "${params.hostname} ansible_user=ec2-user ansible_ssh_private_key_file=${params.key}" >> hosts.ini
-                    sed -i '+s+pull .*/+pull ${params.DOCKER_USERNAME}/+g' prod-playbook.yml
-                    sed -i '+s+image: .*/+image: ${params.DOCKER_USERNAME}/+g' docker-compose.yml
-                   """
-                   if (params.Verify_Key_Fingerprint == "false") {
-                        sh "ssh-keyscan -H ${params.hostname} >> ~/.ssh/known_hosts"
-                    }
-                    sh "ansible-playbook -i hosts.ini prod-playbook.yml"
+                script {
+                    sh """ 
+                        mkdir inventory || true
+                        echo "[ec2]" > hosts.ini
+                        echo "${params.hostname} ansible_user=ec2-user ansible_ssh_private_key_file=${params.key}" >> hosts.ini
+                        sed -i '+s+pull .*/+pull ${params.DOCKER_USERNAME}/+g' prod-playbook.yml
+                        sed -i '+s+image: .*/+image: ${params.DOCKER_USERNAME}/+g' docker-compose.yml
+                    """
+                    if (params.Verify_Key_Fingerprint == "false") {
+                            sh "ssh-keyscan -H ${params.hostname} >> ~/.ssh/known_hosts"
+                        }
+                        sh "ansible-playbook -i hosts.ini prod-playbook.yml"
+                }
             }
         }
         
