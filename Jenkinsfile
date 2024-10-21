@@ -31,6 +31,8 @@ pipeline{
         stage('Build Docker Images'){
             steps{
                 sh """cd vote
+                      pwd 
+                      ls -l
                       docker build -t ${DOCKER_USERNAME}/vote:1 .   
                    """  
                 sh """cd worker
