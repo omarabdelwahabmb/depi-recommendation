@@ -3,10 +3,10 @@ pipeline{
 
     parameters {
         string(defaultValue: 'omarabdelwahabmb@gmail.com', description: 'Please, Enter Email to receive notifications:', name: 'Email')
-        string(defaultValue: '1998shehab', description: 'Please, dockerhub username:', name: 'DOCKER_USERNAME')
+        string(defaultValue: 'omarabdelwahabmb', description: 'Please, dockerhub username:', name: 'DOCKER_USERNAME')
         password(description: 'Please, dockerhub password:', name: 'DOCKER_PASSWORD')
-        string(description: 'Please, Enter hostname of instance:', name: 'hostname')
-        string(description: 'Please, Enter Private key path:', name: 'key')
+        string(defaultValue: '35.92.134.21', description: 'Please, Enter hostname of instance:', name: 'hostname')
+        string(defaultValue: '/home/omar/Eng/Courses/AWS - Sprints/keys/labsuser.pem', description: 'Please, Enter Private key path:', name: 'key')
         booleanParam(name: 'Verify_Key_Fingerprint', defaultValue: true, description: 'Verify key fingerprint. Don\'t disable it. Use it for initial connection.')
     }
 
