@@ -32,7 +32,7 @@
     
     - name: Copy docker-compose.yml file
       ansible.builtin.copy:
-        src: depi-recommendation/docker-compose.yml
+        src: docker-compose.yml
         dest: /home/ec2-user/vote-app/
         mode: '400'
 
