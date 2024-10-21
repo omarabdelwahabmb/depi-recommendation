@@ -28,13 +28,13 @@ pipeline{
         }    
         stage('Build Docker Images'){
             steps{
-                sh """cd ${params.repo}/vote
+                sh """cd depi-recommendation/vote
                       docker build -t ${params.DOCKER_USERNAME}/vote:1 .   
                    """  
-                sh """cd ${params.repo}/worker
+                sh """cd depi-recommendation/worker
                       docker build -t ${params.DOCKER_USERNAME}/worker:1 .
                    """ 
-                sh """cd ${params.repo}/result
+                sh """cd depi-recommendation/result
                       docker build -t ${params.DOCKER_USERNAME}/result:1 .
                    """ 
             }
