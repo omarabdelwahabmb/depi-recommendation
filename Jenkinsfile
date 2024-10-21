@@ -72,7 +72,7 @@ pipeline{
             steps{
                 script {
                        if (params.Verify_Key_Fingerprint == "false") {
-                            sh "ssh-keyscan -H ${params.hostname} >> ~/.ssh/known_hosts"
+                            sh "sudo ssh-keyscan -H ${params.hostname} >> ~/.ssh/known_hosts"
                         }
                         sh "ansible-playbook -i inventory/hosts.ini prod-playbook.yml"
                 }
