@@ -1,12 +1,12 @@
+def DOCKER_USERNAME = ""
 pipeline{
     agent  any
 
     parameters {
         string(defaultValue: 'omarabdelwahabmb@gmail.com', description: 'Please, Enter Email to receive notifications:', name: 'Email')
-        string(defaultValue: 'omarabdelwahabmb', description: 'Please, dockerhub username:', name: 'DOCKER_USERNAME')
-        password(description: 'Please, dockerhub password:', name: 'DOCKER_PASSWORD')
-        string(defaultValue: '35.92.134.21', description: 'Please, Enter hostname of instance:', name: 'hostname')
-        string(defaultValue: '/home/omar/Eng/Courses/AWS - Sprints/keys/labsuser.pem', description: 'Please, Enter Private key path:', name: 'key')
+        credentials(name: 'DOCKER_CREDENTIALS', description: 'Please, choose docker hub credentials:', required: true)
+        string(description: 'Please, Enter hostname of instance:', name: 'hostname')
+        string(description: 'Please, Enter Private key path:', name: 'key')
         booleanParam(name: 'Verify_Key_Fingerprint', defaultValue: true, description: 'Verify key fingerprint. Don\'t disable it. Use it for initial connection.')
     }
 
@@ -16,6 +16,9 @@ pipeline{
                 script{
                     if (params.Email == "" || params.DOCKER_USERNAME == "" || params.DOCKER_PASSWORD == "" || params.hostname == "" || params.key == "") {
                         error("One or more fields are empty!")
+                    }
+                    withCredentials([usernamePassword(credentialsId: params.DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME1', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        DOCKER_USERNAME = DOCKER_USERNAME1
                     }
                 }
             }
@@ -28,13 +31,13 @@ pipeline{
         stage('Build Docker Images'){
             steps{
                 sh """cd vote
-                      docker build -t ${params.DOCKER_USERNAME}/vote:1 .   
+                      docker build -t ${DOCKER_USERNAME}/vote:1 .   
                    """  
                 sh """cd worker
-                      docker build -t ${params.DOCKER_USERNAME}/worker:1 .
+                      docker build -t ${DOCKER_USERNAME}/worker:1 .
                    """ 
                 sh """cd result
-                      docker build -t ${params.DOCKER_USERNAME}/result:1 .
+                      docker build -t ${DOCKER_USERNAME}/result:1 .
                    """ 
             }
         }
@@ -42,15 +45,17 @@ pipeline{
         stage('Docker Login'){
             steps{
                 script{
-                    sh "echo ${params.DOCKER_PASSWORD} | docker login -u ${params.DOCKER_USERNAME} --password-stdin "
+                    withCredentials([usernamePassword(credentialsId: params.DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {  
+                        sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'  
+                    }
                 }
             }
         }
         stage('Push Images'){
             steps{
-                sh """ docker push ${params.DOCKER_USERNAME}/result:1
-                       docker push ${params.DOCKER_USERNAME}/worker:1
-                       docker push ${params.DOCKER_USERNAME}/vote:1
+                sh """ docker push ${DOCKER_USERNAME}/result:1
+                       docker push ${DOCKER_USERNAME}/worker:1
+                       docker push ${DOCKER_USERNAME}/vote:1
                    """           
             }
         }
@@ -61,8 +66,8 @@ pipeline{
                         mkdir -p inventory
                         echo "[ec2]" > inventory/hosts.ini
                         echo "${params.hostname} ansible_user=ec2-user ansible_ssh_private_key_file='${params.key}'" >> inventory/hosts.ini
-                        sed -i '+s+pull .*/+pull ${params.DOCKER_USERNAME}/+g' prod-playbook.yml
-                        sed -i '+s+image: .*/+image: ${params.DOCKER_USERNAME}/+g' docker-compose.yml
+                        sed -i '+s+pull .*/+pull ${DOCKER_USERNAME}/+g' prod-playbook.yml
+                        sed -i '+s+image: .*/+image: ${DOCKER_USERNAME}/+g' docker-compose.yml
                     """
             }
         }
