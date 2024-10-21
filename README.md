@@ -3,7 +3,7 @@
 
 ## Architecture
 
-![image](https://github.com/user-attachments/assets/3d1667e4-9082-40bb-9292-09e105506bac)
+                    ![image](https://github.com/user-attachments/assets/3d1667e4-9082-40bb-9292-09e105506bac)
 
 * A front-end web app in [Python](/vote) which lets you vote between two options
 * A [Redis](https://hub.docker.com/_/redis/) which collects new votes
