@@ -41,13 +41,13 @@
 ### Jenkins Pipeline Setup 
 #### The pipeline is managed via Jenkins and includes the following stages:
 
-1- Checkout code: Fetches the latest version of code from the Git repository.
+1. Checkout code: Fetches the latest version of code from the Git repository.
 
-2- Build Docker images: Builds Docker images for frontend, worker, and backend applications.
+2. Build Docker images: Builds Docker images for frontend, worker, and backend applications.
 
-3- Push Docker images: Pushes the built images to Docker Hub.
+3. Push Docker images: Pushes the built images to Docker Hub.
 
-4- Deploy with Ansible: Ansible Configures EC2 instances, sets up Docker, and deploys the application using Docker Compose.
+4. Deploy with Ansible: Ansible Configures EC2 instances, sets up Docker, and deploys the application using Docker Compose.
 
 ## Security Measures 
 ### The following security practices are applied:
