@@ -39,25 +39,24 @@
 
 ## Deployment Process 
 ### Jenkins Pipeline Setup 
-1-The pipeline is managed via Jenkins and includes the following stages:
+#### The pipeline is managed via Jenkins and includes the following stages:
 
-2-Checkout code: Fetches the latest code from the Git repository.
+1- Checkout code: Fetches the latest version of code from the Git repository.
 
-3-Build Docker images: Builds Docker images for both the backend and frontend applications.
+2- Build Docker images: Builds Docker images for frontend, worker, and backend applications.
 
-4-Run Tests: Runs unit tests to ensure code quality.
+3- Push Docker images: Pushes the built images to Docker Hub.
 
-5-Push Docker images: Pushes the built images to Docker Hub.
-
-6-Deploy with Ansible: Ansible provisions EC2 instances, sets up Docker, and deploys the application using Docker Compose.
+4- Deploy with Ansible: Ansible Configures EC2 instances, sets up Docker, and deploys the application using Docker Compose.
 
 ## Security Measures 
 ### The following security practices are applied:
 
-- Secrets Management: Sensitive information like database credentials are stored securely using Jenkins and HashiCorp Vault. 
+- Jenkins Credentials: Stores Passwords Securely.
 - SSH Keys: Only SSH key-based authentication is allowed for server access.
 
-## Contributing We welcome contributions to improve this project.
+## Contributing
+We welcome contributions to improve this project.
 ### Please follow these steps:
 
 - Fork the repository.
