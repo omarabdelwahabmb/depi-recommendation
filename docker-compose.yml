@@ -27,14 +27,22 @@ services:
     image: 1998shehab/vote:1
     ports:
       - "5000:80"
+    networks:
+      - front-tier
+      - back-tier
   
   worker:
     image: 1998shehab/worker:1
+    networks:
+      - back-tier
 
   result:
     image: 1998shehab/result:1
     ports:
       - "5001:80"
+    networks:
+      - front-tier
+      - back-tier
 
 volumes:
   db-data:
