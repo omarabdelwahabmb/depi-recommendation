@@ -3,7 +3,7 @@
 
 ## Architecture
 
-![image](https://github.com/user-attachments/assets/3d1667e4-9082-40bb-9292-09e105506bac)
+![napkin-selection (7)](https://github.com/user-attachments/assets/d5fff263-926b-4045-9dec-a51512bc02d5)
 
 * A front-end web app in [Python](/vote) which lets you vote between two options
 * A [Redis](https://hub.docker.com/_/redis/) which collects new votes
