@@ -58,7 +58,7 @@ pipeline{
         stage('Create Inventory'){
             steps{
                 sh """ 
-                    mkdir inventory
+                    mkdir inventory || true
                     echo "[ec2]" > hosts.ini
                     echo "${params.hostname} ansible_user=ec2-user ansible_ssh_private_key_file=${params.key}" >> hosts.ini
                     sed -i '+s+pull .*/+pull ${params.DOCKER_USERNAME}/+g' prod-playbook.yml
