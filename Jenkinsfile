@@ -30,16 +30,10 @@ pipeline{
         }    
         stage('Build Docker Images'){
             steps{
-                sh """cd vote
-                      pwd 
-                      ls -l
-                      docker build -f Dockerfile -t ${DOCKER_USERNAME}/vote:1 .   
-                   """  
-                sh """cd worker
-                      docker build -f Dockerfile -t ${DOCKER_USERNAME}/worker:1 .
-                   """ 
-                sh """cd result
-                      docker build -f Dockerfile -t ${DOCKER_USERNAME}/result:1 .
+                sh """
+                    docker build -t ${DOCKER_USERNAME}/vote:1 vote
+                    docker build -t ${DOCKER_USERNAME}/worker:1 worker
+                    docker build -t ${DOCKER_USERNAME}/result:1 result
                    """ 
             }
         }
