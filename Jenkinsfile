@@ -4,6 +4,7 @@ pipeline{
 
     parameters {
         string(defaultValue: 'omarabdelwahabmb@gmail.com', description: 'Please, Enter Email to receive notifications:', name: 'Email')
+        string(defaultValue: '/home/yat/Desktop/project-presentation', description: 'Please, Enter your working directory', name: 'directory')
         credentials(name: 'DOCKER_CREDENTIALS', description: 'Please, choose docker hub credentials:', required: true)
         string(description: 'Please, Enter hostname of instance:', name: 'hostname')
         string(description: 'Please, Enter Private key path:', name: 'key')
@@ -14,7 +15,7 @@ pipeline{
         stage ('Parameter Validation'){
             steps{
                 script{
-                    if (params.Email == "" || params.DOCKER_USERNAME == "" || params.DOCKER_PASSWORD == "" || params.hostname == "" || params.key == "") {
+                    if (params.Email == "" || params.DOCKER_USERNAME == "" || params.DOCKER_PASSWORD == "" || params.hostname == "" || params.key == "" || params.directory == "") {
                         error("One or more fields are empty!")
                     }
                     withCredentials([usernamePassword(credentialsId: params.DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME1', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -25,16 +26,23 @@ pipeline{
         }
         stage('Clone Repo'){
             steps{
-                git(url: "https://github.com/omarabdelwahabmb/depi-recommendation.git", branch: 'main')
+                dir (params.directory){
+                   git(url: "https://github.com/omarabdelwahabmb/depi-recommendation.git", branch: 'main')
+                }
+                
             }
         }    
         stage('Build Docker Images'){
             steps{
-                sh """
+                dir (params.directory){
+                  sh """
                     docker build -t ${DOCKER_USERNAME}/vote:1 vote
                     docker build -t ${DOCKER_USERNAME}/worker:1 worker
                     docker build -t ${DOCKER_USERNAME}/result:1 result
-                   """ 
+                   """   
+                }
+
+                
             }
         }
 
@@ -58,6 +66,7 @@ pipeline{
 
         stage('Create Inventory'){
             steps{
+                dir (params.directory){
                     sh """ 
                         mkdir -p inventory
                         echo "[ec2]" > inventory/hosts.ini
@@ -65,19 +74,21 @@ pipeline{
                         sed -i '+s+pull .*/+pull ${DOCKER_USERNAME}/+g' prod-playbook.yml
                         sed -i '+s+image: .*/+image: ${DOCKER_USERNAME}/+g' docker-compose.yml
                     """
+                }
             }
         }
-        
 
         stage('deploy with ansible'){
             steps{
-                script {
-                       if (!params.Verify_Key_Fingerprint) {
+                dir (params.directory){
+                    script {
+                        if (!params.Verify_Key_Fingerprint) {
                             sh "sudo ssh-keyscan -H ${params.hostname} >> ~/.ssh/known_hosts"
                         }
                         sh "ansible-playbook -i inventory/hosts.ini prod-playbook.yml"
                         echo "Voting can be done at http://${params.hostname}:5000"
                         echo "Result is at http://${params.hostname}:5001"
+                    }
                 }
             }
         }
