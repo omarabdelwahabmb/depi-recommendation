@@ -84,9 +84,9 @@ pipeline{
                     script {
                         verify = ""
                         if (!params.Verify_Key_Fingerprint) {
-                            verify = "-e 'ansible_host_key_checking=False'"
+                            verify = " -e 'ansible_host_key_checking=False'"
                         }
-                        sh "ansible-playbook -i inventory/hosts.ini prod-playbook.yml ${verify}"
+                        sh "ansible-playbook -i inventory/hosts.ini prod-playbook.yml${verify}"
                         echo "Voting can be done at http://${params.hostname}:5000"
                         echo "Result is at http://${params.hostname}:5001"
                     }
