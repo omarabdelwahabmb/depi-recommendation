@@ -82,10 +82,11 @@ pipeline{
             steps{
                 dir (params.directory){
                     script {
+                        verify = ""
                         if (!params.Verify_Key_Fingerprint) {
-                            sh "sudo ssh-keyscan -H ${params.hostname} >> ~/.ssh/known_hosts"
+                            verify = "-e 'ansible_host_key_checking=False'"
                         }
-                        sh "ansible-playbook -i inventory/hosts.ini prod-playbook.yml"
+                        sh "ansible-playbook -i inventory/hosts.ini prod-playbook.yml ${verify}"
                         echo "Voting can be done at http://${params.hostname}:5000"
                         echo "Result is at http://${params.hostname}:5001"
                     }
