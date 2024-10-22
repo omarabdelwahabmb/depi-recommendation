@@ -37,7 +37,7 @@
 - Ansible installed on the Jenkins server. 
 - AWS account with EC2.
 
-  For detailed deployment steps: Please, check the Requirements.txt file.
+  For detailed deployment steps: Please, check the Requirements.md file.
 
 ## Deployment Process 
 ### Jenkins Pipeline Setup 
